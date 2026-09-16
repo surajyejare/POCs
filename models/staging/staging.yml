@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Cleaned and standardized customer source data."
+
+    columns:
+      - name: CUSTOMER_ID
+        description: "Business identifier of the customer."
+        tests:
+          - not_null
+
+  - name: stg_orders
+    description: "Cleaned and standardized order source data."
+
+    columns:
+      - name: ORDER_ID
+        description: "Business identifier of the order."
+        tests:
+          - not_null
+
+      - name: CUSTOMER_ID
+        description: "Customer associated with the order."
+        tests:
+          - not_null
