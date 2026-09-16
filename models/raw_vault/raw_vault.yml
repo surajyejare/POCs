@@ -62,16 +62,18 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('hub_customer')
-              field: CUSTOMER_HK
+              arguments:
+                to: ref('hub_customer')
+                field: CUSTOMER_HK
 
       - name: ORDER_HK
         description: "Hash key referencing HUB_ORDER."
         tests:
           - not_null
           - relationships:
-              to: ref('hub_order')
-              field: ORDER_HK
+              arguments:
+                to: ref('hub_order')
+                field: ORDER_HK
 
   - name: sat_customer
     description: "Customer descriptive attributes and history."
@@ -82,8 +84,9 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('hub_customer')
-              field: CUSTOMER_HK
+              arguments:
+                to: ref('hub_customer')
+                field: CUSTOMER_HK
 
       - name: HASHDIFF
         description: "Hash of customer descriptive attributes."
@@ -107,8 +110,9 @@ models:
         tests:
           - not_null
           - relationships:
-              to: ref('hub_order')
-              field: ORDER_HK
+              arguments:
+                to: ref('hub_order')
+                field: ORDER_HK
 
       - name: HASHDIFF
         description: "Hash of order descriptive attributes."
