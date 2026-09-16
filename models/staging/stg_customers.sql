@@ -11,7 +11,7 @@ WITH source_data AS (
 
         NULLIF(TRIM(CUSTOMER_PHONE), '') AS CUSTOMER_PHONE
 
-    FROM DBT_PROJECT_DB.RAW.RAW_CUSTOMERS
+    FROM {{ source('raw', 'raw_customers') }}
 
 )
 

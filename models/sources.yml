@@ -1,0 +1,32 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw source tables loaded into Snowflake before transformation."
+    database: DBT_PROJECT_DB
+    schema: RAW
+    loader: "Manual load"
+
+    tables:
+      - name: raw_customers
+        description: "Raw customer records loaded from the upstream system."
+      - name: raw_orders
+        description: "Raw order records loaded from the upstream system."
+
+  - name: staging
+    description: "staging layer Snowflake after transformation."
+    database: DBT_PROJECT_DB
+    schema: STAGING
+    loader: "dbt load"
+
+    tables:
+      - name: hub_customer
+        description: "Customer Hub containing customer business keys."
+      - name: hub_order
+        description: "Order Hub containing order business keys."
+      - name: link_customer_order
+        description: "Link between Customer Hub and Order Hub."
+      - name: sat_customer
+        description: "Customer descriptive attributes and history."
+      - name: sat_order
+        description: "Order descriptive attributes including date and amount."

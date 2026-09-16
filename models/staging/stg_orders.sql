@@ -9,7 +9,7 @@ WITH source_data AS (
 
         CAST(ORDER_AMOUNT AS NUMBER(18,2)) AS ORDER_AMOUNT
 
-    FROM DBT_PROJECT_DB.RAW.RAW_ORDERS
+    FROM  {{ source('raw', 'raw_orders') }}
 
 )
 
