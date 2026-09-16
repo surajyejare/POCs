@@ -1,0 +1,128 @@
+version: 2
+
+models:
+  - name: hub_customer
+    description: "Customer Hub containing customer business keys."
+
+    columns:
+      - name: CUSTOMER_HK
+        description: "Hash key generated from CUSTOMER_ID."
+        tests:
+          - not_null
+          - unique
+
+      - name: CUSTOMER_ID
+        description: "Customer business key."
+        tests:
+          - not_null
+
+      - name: LOAD_DTS
+        tests:
+          - not_null
+
+      - name: RECORD_SOURCE
+        tests:
+          - not_null
+
+  - name: hub_order
+    description: "Order Hub containing order business keys."
+
+    columns:
+      - name: ORDER_HK
+        description: "Hash key generated from ORDER_ID."
+        tests:
+          - not_null
+          - unique
+
+      - name: ORDER_ID
+        description: "Order business key."
+        tests:
+          - not_null
+
+      - name: LOAD_DTS
+        tests:
+          - not_null
+
+      - name: RECORD_SOURCE
+        tests:
+          - not_null
+
+  - name: link_customer_order
+    description: "Link between Customer Hub and Order Hub."
+
+    columns:
+      - name: CUSTOMER_ORDER_HK
+        description: "Hash key generated from CUSTOMER_ID and ORDER_ID."
+        tests:
+          - not_null
+          - unique
+
+      - name: CUSTOMER_HK
+        description: "Hash key referencing HUB_CUSTOMER."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: CUSTOMER_HK
+
+      - name: ORDER_HK
+        description: "Hash key referencing HUB_ORDER."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('hub_order')
+                field: ORDER_HK
+
+  - name: sat_customer
+    description: "Customer descriptive attributes and history."
+
+    columns:
+      - name: CUSTOMER_HK
+        description: "Hash key referencing HUB_CUSTOMER."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('hub_customer')
+                field: CUSTOMER_HK
+
+      - name: HASHDIFF
+        description: "Hash of customer descriptive attributes."
+        tests:
+          - not_null
+
+      - name: LOAD_DTS
+        tests:
+          - not_null
+
+      - name: RECORD_SOURCE
+        tests:
+          - not_null
+
+  - name: sat_order
+    description: "Order descriptive attributes including date and amount."
+
+    columns:
+      - name: ORDER_HK
+        description: "Hash key referencing HUB_ORDER."
+        tests:
+          - not_null
+          - relationships:
+              arguments:
+                to: ref('hub_order')
+                field: ORDER_HK
+
+      - name: HASHDIFF
+        description: "Hash of order descriptive attributes."
+        tests:
+          - not_null
+
+      - name: LOAD_DTS
+        tests:
+          - not_null
+
+      - name: RECORD_SOURCE
+        tests:
+          - not_null
