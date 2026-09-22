@@ -1,7 +1,6 @@
 {{ config(
     materialized='incremental',
-    incremental_strategy='merge',
-    unique_key='order_hk'
+    incremental_strategy='append'
 ) }}
 
 WITH source_data AS (

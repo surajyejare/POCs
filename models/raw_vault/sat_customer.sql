@@ -47,13 +47,20 @@ FROM source_data
 
 {% if is_incremental() %}
 
+
+
 WHERE NOT EXISTS (
 
     SELECT 1
-    FROM {{ this }} existing
-
-    WHERE existing.CUSTOMER_HK = source_data.CUSTOMER_HK
-      AND existing.HASHDIFF = source_data.HASHDIFF
+    FROM (
+        SELECT CUSTOMER_HK, HASHDIFF
+        FROM {{ this }}
+        QUALIFY ROW_NUMBER() OVER (
+            PARTITION BY CUSTOMER_HK ORDER BY LOAD_DTS DESC
+        ) = 1
+    ) latest
+    WHERE latest.CUSTOMER_HK = source_data.CUSTOMER_HK
+      AND latest.HASHDIFF = source_data.HASHDIFF
 
 )
 

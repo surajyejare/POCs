@@ -46,10 +46,15 @@ FROM source_data
 WHERE NOT EXISTS (
 
     SELECT 1
-    FROM {{ this }} existing
-
-    WHERE existing.ORDER_HK = source_data.ORDER_HK
-      AND existing.HASHDIFF = source_data.HASHDIFF
+    FROM (
+        SELECT ORDER_HK, HASHDIFF
+        FROM {{ this }}
+        QUALIFY ROW_NUMBER() OVER (
+            PARTITION BY ORDER_HK ORDER BY LOAD_DTS DESC
+        ) = 1
+    ) latest
+    WHERE latest.ORDER_HK = source_data.ORDER_HK
+      AND latest.HASHDIFF = source_data.HASHDIFF
 
 )
 
